@@ -23,3 +23,12 @@ resource "aws_vpc" "MyLab_VPC" {
     "Name" = "MyLab_VPC"
   }
 }
+
+resource "aws_subnet" "MyLAB_sn1" {
+  vpc_id = aws_vpc.MyLab_VPC.id
+  cidr_block = "172.20.10.0/24"
+
+  tags = {
+    "Name" = "MyLab-sn1"
+  }
+}
