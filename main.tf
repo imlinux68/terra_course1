@@ -24,11 +24,23 @@ resource "aws_vpc" "MyLab_VPC" {
   }
 }
 
+# Create a subnet #
+
 resource "aws_subnet" "MyLAB_sn1" {
   vpc_id = aws_vpc.MyLab_VPC.id
   cidr_block = "172.20.10.0/24"
 
   tags = {
     "Name" = "MyLab-sn1"
+  }
+}
+
+# Create Internet Gateway #
+
+resource "aws_internet_gateway" "MyLab-IGW" {
+  vpc_id = aws_vpc.MyLab_VPC.id
+
+  tags = {
+    Name = "MyLAB-internet_gateWay"
   }
 }
