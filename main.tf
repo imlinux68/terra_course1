@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
         source = "hashicorp/aws"
-        versversion = "~>3.0"
+        version = "~>3.0"
     }
   }
 }
@@ -19,4 +19,7 @@ provider "aws" {
 resource "aws_vpc" "MyLab_VPC" {
   cidr_block = "172.20.0.0/16"
   
+  tags = {
+    "Name" = "MyLab_VPC"
+  }
 }
