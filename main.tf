@@ -17,7 +17,7 @@ provider "aws" {
 # Create a VPC #
 
 resource "aws_vpc" "MyLab_VPC" {
-  cidr_block = "172.20.0.0/16"
+  cidr_block = var.cidr_block[0]
   
   tags = {
     "Name" = "MyLab_VPC"
@@ -28,7 +28,7 @@ resource "aws_vpc" "MyLab_VPC" {
 
 resource "aws_subnet" "MyLAB_sn1" {
   vpc_id = aws_vpc.MyLab_VPC.id
-  cidr_block = var.cidr_block[0]
+  cidr_block = var.cidr_block[1]
 
   tags = {
     "Name" = "MyLab-sn1"
