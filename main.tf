@@ -16,6 +16,7 @@ provider "aws" {
 
 # Create a VPC #
 
-resource "aws_vpc" {
+resource "aws_vpc" "MyLab_VPC" {
   cidr_block = "172.20.0.0/16"
+  
 }
