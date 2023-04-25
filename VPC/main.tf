@@ -98,15 +98,15 @@ resource "aws_route_table_association" "MyLAB_ASSN" {
 
 # Create an AWS instnace #
 
-resource "aws_instance" "DemoResource" {
+resource "aws_instance" "HelloWorld" {
   ami           = var.ami
   instance_type = var.instance_type
   key_name = "EC2"
-  vpc_security_group_ids = [aws_security_group.MyLab_Sec_Group.id]
-  subnet_id = aws_subnet.MyLab-Subnet1.id
+  vpc_security_group_ids = aws_security_group.MyLab-sg1.id
+  subnet_id = aws_subnet.MyLAB_sn1.id
   associate_public_ip_address = true
   
   tags = {
-    Name = "DemoResource"
+    Name = "Hello_world"
   }
 }
