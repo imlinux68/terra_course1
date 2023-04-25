@@ -18,7 +18,7 @@ provider "aws" {
 
 resource "aws_vpc" "MyLab_VPC" {
   cidr_block = var.cidr_block[0]
-  
+
   tags = {
     "Name" = "MyLab_VPC"
   }
@@ -27,7 +27,7 @@ resource "aws_vpc" "MyLab_VPC" {
 # Create a subnet #
 
 resource "aws_subnet" "MyLAB_sn1" {
-  vpc_id = aws_vpc.MyLab_VPC.id
+  vpc_id     = aws_vpc.MyLab_VPC.id
   cidr_block = var.cidr_block[1]
 
   tags = {
@@ -48,32 +48,32 @@ resource "aws_internet_gateway" "MyLab-IGW" {
 # Create security group #
 
 resource "aws_security_group" "MyLab-sg1" {
-    name = "MyLab Security Group"
-    description = "To allow inbound and outbound traffic for my lab"
-    vpc_id = aws_vpc.MyLab_VPC.id
+  name        = "MyLab Security Group"
+  description = "To allow inbound and outbound traffic for my lab"
+  vpc_id      = aws_vpc.MyLab_VPC.id
 
-    dynamic ingress {
-        iterator = port
-        for_each = var.ports
-        content {
-            from_port = port.value
-            to_port = port.value
-            protocol = "tcp"
-            cidr_blocks = ["0.0.0.0/0"]
-        }
+  dynamic "ingress" {
+    iterator = port
+    for_each = var.ports
+    content {
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
     }
+  }
 
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    tags = {
-      "Name" = "allow traffic"
-    }
-  
+  tags = {
+    "Name" = "allow traffic"
+  }
+
 }
 
 # Create route table and association #
@@ -92,20 +92,20 @@ resource "aws_route_table" "MyLAB-rt1" {
 }
 
 resource "aws_route_table_association" "MyLAB_ASSN" {
-  subnet_id = aws_subnet.MyLAB_sn1.id
+  subnet_id      = aws_subnet.MyLAB_sn1.id
   route_table_id = aws_route_table.MyLAB-rt1.id
 }
 
 # Create an AWS instnace #
 
 resource "aws_instance" "HelloWorld" {
-  ami           = var.ami
-  instance_type = var.instance_type
-  key_name = "EC2"
-  vpc_security_group_ids = aws_security_group.MyLab-sg1.id
-  subnet_id = aws_subnet.MyLAB_sn1.id
+  ami                         = var.ami
+  instance_type               = var.instance_type
+  key_name                    = "EC2"
+  vpc_security_group_ids      = [aws_security_group.MyLab-sg1.id]
+  subnet_id                   = aws_subnet.MyLAB_sn1.id
   associate_public_ip_address = true
-  
+
   tags = {
     Name = "Hello_world"
   }
